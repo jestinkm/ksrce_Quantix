@@ -2,8 +2,7 @@ var IMG={
   "QUA": "assets/quantix-logo.jpg",
   "KSR": "assets/ksrce-logo.jpg",
   "PRA": "assets/praskla-logo.png",
-  "FLYER": "assets/flyer.jpeg",
-  "DEV": "assets/devfolio-logo.png"
+  "FLYER": "assets/flyer.jpeg"
 };
 
 (function(){
@@ -11,15 +10,12 @@ var IMG={
 var useState=React.useState,useEffect=React.useEffect,useRef=React.useRef;
 var h=React.createElement;
 var FORM="https://docs.google.com/forms/d/e/1FAIpQLSdTKTcflw1Xd1MwzrQ62AeMMN_r6_e7ccnRiqJcwPfIb4ygmQ/viewform?usp=sharing&ouid=107403460728283306105";
-var DEVFOLIO="https://quantix-2k26.devfolio.co/";
-var DEVSLUG="quantix-2k26";
-var REG="#register";
 var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 var canHover=window.matchMedia&&matchMedia("(hover: hover)").matches;
 function pad(x){return String(x).padStart(2,"0")}
 
 /* ---------- data ---------- */
-var NAV=[["about","About"],["tracks","Domains"],["schedule","Schedule"],["rules","Guidelines"],["food","Food"],["register","Register"],["contact","Contact"]];
+var NAV=[["about","About"],["tracks","Domains"],["schedule","Schedule"],["rules","Guidelines"],["food","Food"],["contact","Contact"]];
 var TRACKS=["Artificial Intelligence & Machine Learning","Sustainability, CleanTech & Green Energy","HealthTech & Biomedical Innovation","Cybersecurity & Blockchain Technology","Smart Agriculture & Rural Development (AgniTech)","Data Science & Analytics"];
 var SCHEDULE=[
  ["23 Oct · 10:00 AM","Hackathon begins","Report for attendance and seating. Problem statements are released on the spot."],
@@ -132,7 +128,7 @@ function Header(p){
           p.theme==="dark"
             ?h(Icon,null,h("circle",{cx:12,cy:12,r:4}),h("path",{d:"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"}))
             :h(Icon,null,h("path",{d:"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"}))),
-        h("a",{className:"btn primary reg",href:REG},"Register now"),
+        h("a",{className:"btn primary reg",href:FORM,target:"_blank",rel:"noopener"},"Register now"),
         h("button",{className:"burger"+(p.open?" x":""),"aria-label":"Toggle menu","aria-expanded":p.open,onClick:function(){p.setOpen(!p.open)}},h("i"),h("i"),h("i")))));
 }
 
@@ -157,7 +153,7 @@ function Hero(){
         h("div",{className:"slant"},h("span",null,"24 hours ",h("i",null,"//")," hackathon")),
         h("div",{className:"circuit hi hi2"},"Real ideas. Real code. Real impact."),
         h("div",{className:"cta hi hi3"},
-          h("a",{className:"btn primary pulse",href:REG},"Register your team"),
+          h("a",{className:"btn primary pulse",href:FORM,target:"_blank",rel:"noopener"},"Register your team"),
           h("a",{className:"btn ghost",href:"#schedule"},"View schedule"))),
       h("aside",{className:"side hi hi2"},
         h("div",{className:"plate-wrap"},h("div",{className:"ring"}),h("div",{className:"plate"},h("img",{src:IMG.QUA,alt:"QUANTIX AI & DS Association emblem"}))),
@@ -171,11 +167,10 @@ function Facts(){
     h("p",{className:"note"},"On-spot registration is also available at Emerald Hall.")));
 }
 
-function hideBroken(e){e.currentTarget.style.visibility="hidden"}
 function Partners(){
-  var items=[[IMG.KSR,"K.S.R. College of Engineering","Host institution"],[IMG.QUA,"QUANTIX Association","Organised by"],[IMG.PRA,"Praskla Technology","Innovation & career partner"],[IMG.DEV,"DEVFOLIO LOGO","Registration platform"]];
+  var items=[[IMG.KSR,"K.S.R. College of Engineering","Host institution"],[IMG.QUA,"QUANTIX Association","Organised by"],[IMG.PRA,"Praskla Technology","Innovation & career partner"]];
   return h("div",{className:"partners"},h("div",{className:"wrap logos"},items.map(function(x,i){
-    return h(Reveal,{key:i,as:"figure",delay:i*110},h("div",{className:"lg"},h("img",{src:x[0],alt:x[1],onError:hideBroken})),x[2]);
+    return h(Reveal,{key:i,as:"figure",delay:i*110},h("div",{className:"lg"},h("img",{src:x[0],alt:x[1]})),x[2]);
   })));
 }
 
@@ -257,22 +252,7 @@ function Rewards(){
   return h("section",{className:"rewards"},h("div",{className:"wrap"},
     h(Reveal,{className:"ribbon",dir:"zoom"},h("h2",null,"Exciting rewards for winners + pre-placement opportunities")),
     h(Reveal,{as:"p",delay:120},"Top teams take home prizes and a fast track to opportunities with our innovation and career partner, Praskla Technology."),
-    h(Reveal,{delay:220},h("a",{className:"btn primary pulse",href:REG},"Claim your spot"))));
-}
-
-function Register(){
-  var facts=["₹450 per head, 1 to 4 members per team","Online registration closes on 22 October at 12 PM","On-spot registration is also available at Emerald Hall","Problem statements are released on the spot; open innovation is also allowed"];
-  return h("section",{id:"register"},h("div",{className:"wrap"},
-    h(Head,{title:"Join QUANTIX 2K26",sub:"Build innovative solutions in our 24-hour hackathon. Applications are handled on Devfolio."}),
-    h("div",{className:"devwrap"},
-      h(Reveal,{className:"card spot devinfo",spot:true,dir:"left"},h("h3",null,"Before you apply"),
-        h("ul",{className:"ck"},facts.map(function(t,i){return h("li",{key:i},t)}))),
-      h(Reveal,{className:"devcard",dir:"right",delay:120},
-        h("a",{className:"dlogo-link",href:"https://devfolio.co",target:"_blank",rel:"noopener noreferrer"},
-          h("img",{className:"dlogo",src:IMG.DEV,alt:"DEVFOLIO LOGO",onError:hideBroken})),
-        h("div",{className:"apply-button","data-hackathon-slug":DEVSLUG,"data-button-theme":"light",style:{height:"44px",width:"312px",maxWidth:"100%"}}),
-        h("a",{className:"alt-link",href:DEVFOLIO,target:"_blank",rel:"noopener noreferrer"},"Open QUANTIX 2K26 on Devfolio ↗"),
-        h("small",null,"If the button does not load, use the link above.")))));
+    h(Reveal,{delay:220},h("a",{className:"btn primary pulse",href:FORM,target:"_blank",rel:"noopener"},"Claim your spot"))));
 }
 
 function Poster(){
@@ -287,7 +267,7 @@ function Poster(){
         h("li",null,h("b",null,"Venue: "),"Emerald Hall, K.S.R. College of Engineering, Tiruchengode"),
         h("li",null,h("b",null,"When: "),"23 October 2026, 10:00 AM to 24 October 2026, 10:00 AM"),
         h("li",null,h("b",null,"Organised by: "),"QUANTIX Association")),
-      h("a",{className:"btn primary",href:REG},"Register on Devfolio"))));
+      h("a",{className:"btn primary",href:FORM,target:"_blank",rel:"noopener"},"Register on Google Forms"))));
 }
 
 function Contact(){
@@ -353,7 +333,7 @@ function Footer(){
           h("p",null,"₹450 per head · 1–4 members per team · Online registration closes 22 October, 12 PM."),
           h("small",{className:"kick"},kick)),
         h("div",{className:"fb-act"},
-          h("a",{className:"btn primary mg",href:REG,onPointerMove:mag,onPointerLeave:unmag},"Register your team"),
+          h("a",{className:"btn primary mg",href:FORM,target:"_blank",rel:"noopener",onPointerMove:mag,onPointerLeave:unmag},"Register your team"),
           h(ShareBtn))),
       h("div",{className:"foot"},
         h(Reveal,{className:"fbrand"},h("img",{src:IMG.QUA,alt:""}),h("strong",null,"QUANTIX 2K26"),
@@ -361,6 +341,7 @@ function Footer(){
           h("p",{className:"tagl"},"Real ideas. Real code. Real impact.")),
         h(Reveal,{className:"fnav",delay:100},h("h4",null,"Quick links"),
           h("ul",{role:"list"},NAV.map(function(n){return h("li",{key:n[0]},h("a",{href:"#"+n[0]},n[1]))}),
+            h("li",{key:"reg"},h("a",{href:FORM,target:"_blank",rel:"noopener"},"Register")),
             h("li",{key:"top"},h("a",{href:"#top"},"Back to top")))),
         h(Reveal,{className:"fcon",delay:200},h("h4",null,"Get in touch"),
           row("Technical support","8608067217",true,"8608067217","tel:+918608067217"),
@@ -403,12 +384,6 @@ function App(){
     return function(){io.disconnect()};
   },[]);
   useEffect(function(){
-    var sc=document.createElement("script");
-    sc.src="https://apply.devfolio.co/v2/sdk.js";sc.async=true;sc.defer=true;
-    document.body.appendChild(sc);
-    return function(){if(sc.parentNode)sc.parentNode.removeChild(sc)};
-  },[]);
-  useEffect(function(){
     if(reduce)return;
     function rip(e){
       var b=e.target.closest&&e.target.closest(".btn");if(!b)return;
@@ -428,7 +403,7 @@ function App(){
   return h(React.Fragment,null,
     h("div",{className:"progress",ref:bar,"aria-hidden":"true"}),
     h(Header,{theme:theme,toggleTheme:toggleTheme,open:open,setOpen:setOpen,active:active,scrolled:scrolled}),
-    h("main",{id:"top"},h(Hero),h(Facts),h(Partners),h(Ticker),h(About),h(Tracks),h(Schedule),h(Rules),h(Food),h(Rewards),h(Register),h(Poster),h(Contact)),
+    h("main",{id:"top"},h(Hero),h(Facts),h(Partners),h(Ticker),h(About),h(Tracks),h(Schedule),h(Rules),h(Food),h(Rewards),h(Poster),h(Contact)),
     h(Footer),
     h("button",{className:"totop"+(showTop?" show":""),"aria-label":"Back to top",onClick:function(){window.scrollTo({top:0,behavior:reduce?"auto":"smooth"})}},
       h(Icon,null,h("path",{d:"M12 19V5M5 12l7-7 7 7"}))));
