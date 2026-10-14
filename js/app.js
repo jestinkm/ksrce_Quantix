@@ -2,7 +2,8 @@ var IMG={
   "QUA": "assets/quantix-logo.jpg",
   "KSR": "assets/ksrce-logo.jpg",
   "PRA": "assets/praskla-logo.png",
-  "FLYER": "assets/flyer.jpg"
+  "FLYER": "assets/flyer.jpeg",
+  "DEV": "assets/devfolio-logo.png"
 };
 
 (function(){
@@ -10,21 +11,27 @@ var IMG={
 var useState=React.useState,useEffect=React.useEffect,useRef=React.useRef;
 var h=React.createElement;
 var FORM="https://docs.google.com/forms/d/e/1FAIpQLSdTKTcflw1Xd1MwzrQ62AeMMN_r6_e7ccnRiqJcwPfIb4ygmQ/viewform?usp=sharing&ouid=107403460728283306105";
+var DEVFOLIO="https://quantix-2k26.devfolio.co/";
+var DEVSLUG="quantix-2k26";
+var REG="#register";
 var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
 var canHover=window.matchMedia&&matchMedia("(hover: hover)").matches;
 function pad(x){return String(x).padStart(2,"0")}
 
 /* ---------- data ---------- */
-var NAV=[["about","About"],["tracks","Domains"],["schedule","Schedule"],["rules","Guidelines"],["food","Food"],["contact","Contact"]];
-var TRACKS=["Artificial Intelligence & Machine Learning","Sustainability, CleanTech & Green Energy","HealthTech & Biomedical Innovation","Cybersecurity & Blockchain Technology","Smart Agriculture & Rural Development (AgriTech)","Data Science & Analytics"];
+var NAV=[["about","About"],["tracks","Domains"],["schedule","Schedule"],["rules","Guidelines"],["food","Food"],["register","Register"],["contact","Contact"]];
+var TRACKS=["Artificial Intelligence & Machine Learning","Sustainability, CleanTech & Green Energy","HealthTech & Biomedical Innovation","Cybersecurity & Blockchain Technology","Smart Agriculture & Rural Development (AgniTech)","Data Science & Analytics"];
 var SCHEDULE=[
  ["23 Oct · 10:00 AM","Hackathon begins","Report for attendance and seating. Problem statements are released on the spot."],
- ["23 Oct · Evening","Dinner & refreshments","Provided for online and spot registrations. Lunch is for online registrations only."],
- ["Midnight","Refreshments","Fuel up for the final stretch."],
- ["24 Oct · Morning","Breakfast & submissions","Submit your PPT, GitHub link and demo link through the Technical Committee."],
+ ["23 Oct · Afternoon","Lunch","Provided for all participants, online and on-spot."],
+ ["23 Oct · Evening","Evening refreshments","Provided for all participants."],
+ ["23 Oct · Night","Dinner","Provided for all participants."],
+ ["Midnight","Midnight refreshments","Fuel up for the final stretch."],
+ ["24 Oct · Morning","Morning refreshments & submissions","Submit your PPT, GitHub link and demo link through the Technical Committee."],
  ["24 Oct · 10:00 AM","Hackathon ends","PPT evaluation, working product demo, then the winners announcement."]
 ];
-var FOOD=[["Lunch","23 Oct",true,false],["Dinner","23 Oct",true,true],["Breakfast","24 Oct",true,true],["Refreshments","23 Oct evening, midnight, 24 Oct morning",true,true]];
+var MEALS=[["Lunch","23 Oct · Afternoon","utensils"],["Evening refreshments","23 Oct · Evening","cup"],["Dinner","23 Oct · Night","plate"],["Midnight refreshments","Late night","moon"],["Morning refreshments","24 Oct · Morning","sun"]];
+var TICKER=["Real ideas","Real code","Real impact","24 hours","6 domains","On-spot problem statements","Pre-placement opportunities","₹450 per head","Emerald Hall"];
 
 /* ---------- hooks ---------- */
 function useInView(threshold){
@@ -125,7 +132,7 @@ function Header(p){
           p.theme==="dark"
             ?h(Icon,null,h("circle",{cx:12,cy:12,r:4}),h("path",{d:"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"}))
             :h(Icon,null,h("path",{d:"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"}))),
-        h("a",{className:"btn primary reg",href:FORM,target:"_blank",rel:"noopener"},"Register now"),
+        h("a",{className:"btn primary reg",href:REG},"Register now"),
         h("button",{className:"burger"+(p.open?" x":""),"aria-label":"Toggle menu","aria-expanded":p.open,onClick:function(){p.setOpen(!p.open)}},h("i"),h("i"),h("i")))));
 }
 
@@ -140,7 +147,8 @@ function Countdown(){
 }
 
 function Hero(){
-  return h("div",{className:"hero"},
+  function glow(e){if(!canHover||reduce)return;var r=e.currentTarget.getBoundingClientRect();e.currentTarget.style.setProperty("--gx",(e.clientX-r.left)+"px");e.currentTarget.style.setProperty("--gy",(e.clientY-r.top)+"px")}
+  return h("div",{className:"hero",onPointerMove:glow},
     h(Network),
     h("div",{className:"wrap"},
       h("div",{className:"hero-copy"},
@@ -149,7 +157,7 @@ function Hero(){
         h("div",{className:"slant"},h("span",null,"24 hours ",h("i",null,"//")," hackathon")),
         h("div",{className:"circuit hi hi2"},"Real ideas. Real code. Real impact."),
         h("div",{className:"cta hi hi3"},
-          h("a",{className:"btn primary",href:FORM,target:"_blank",rel:"noopener"},"Register your team"),
+          h("a",{className:"btn primary pulse",href:REG},"Register your team"),
           h("a",{className:"btn ghost",href:"#schedule"},"View schedule"))),
       h("aside",{className:"side hi hi2"},
         h("div",{className:"plate-wrap"},h("div",{className:"ring"}),h("div",{className:"plate"},h("img",{src:IMG.QUA,alt:"QUANTIX AI & DS Association emblem"}))),
@@ -157,16 +165,17 @@ function Hero(){
 }
 
 function Facts(){
-  var items=[["23–24 Oct 2026","10:00 AM to 10:00 AM"],["₹500 per head","Registration fee"],["1–4 members","Per team"],["22 Oct, 12 PM","Online registration closes"]];
+  var items=[["23–24 Oct 2026","10:00 AM to 10:00 AM"],["₹450 per head","Registration fee"],["1–4 members","Per team"],["22 Oct, 12 PM","Online registration closes"]];
   return h("div",{className:"facts"},h("div",{className:"wrap"},
     h("div",{className:"band"},items.map(function(x,i){return h(Reveal,{key:i,delay:i*90},h("b",null,x[0]),h("span",null,x[1]))})),
     h("p",{className:"note"},"On-spot registration is also available at Emerald Hall.")));
 }
 
+function hideBroken(e){e.currentTarget.style.visibility="hidden"}
 function Partners(){
-  var items=[[IMG.KSR,"K.S.R. College of Engineering","Host institution"],[IMG.QUA,"QUANTIX Association","Organised by"],[IMG.PRA,"Praskla Technology","Innovation & career partner"]];
+  var items=[[IMG.KSR,"K.S.R. College of Engineering","Host institution"],[IMG.QUA,"QUANTIX Association","Organised by"],[IMG.PRA,"Praskla Technology","Innovation & career partner"],[IMG.DEV,"DEVFOLIO LOGO","Registration platform"]];
   return h("div",{className:"partners"},h("div",{className:"wrap logos"},items.map(function(x,i){
-    return h(Reveal,{key:i,as:"figure",delay:i*110},h("div",{className:"lg"},h("img",{src:x[0],alt:x[1]})),x[2]);
+    return h(Reveal,{key:i,as:"figure",delay:i*110},h("div",{className:"lg"},h("img",{src:x[0],alt:x[1],onError:hideBroken})),x[2]);
   })));
 }
 
@@ -213,27 +222,57 @@ function Rules(){
   var cards=[
     ["Bring with you",["Mandatory: Bringing a laptop is compulsory for every team","College ID card and registration details","One junction box per team","Report to Emerald Hall, Abdul Kalam Block for attendance and seating","Follow the organising committee and volunteers throughout"]],
     ["Evaluation",["PPT evaluation: present your idea and approach","Product evaluation: demo your working product","Submit PPT, GitHub link and demo link via the Technical Committee before evaluation","Winners announced on the morning of 24 October"]],
-    ["Registration",["₹500 per head, 1 to 4 members per team","Online registration closes on 22 October at 12 PM","On-spot registration is available","Problem statements are released on the spot; open innovation is also allowed"]]];
+    ["Registration",["₹450 per head, 1 to 4 members per team","Online registration closes on 22 October at 12 PM","On-spot registration is available","Problem statements are released on the spot; open innovation is also allowed"]]];
   return h("section",{id:"rules",className:"alt"},h("div",{className:"wrap"},
     h(Head,{title:"Guidelines",sub:"Please read these before submitting your registration."}),
     h("div",{className:"two"},cards.map(function(c,i){return h(Reveal,{key:i,className:"card spot",delay:i*110,spot:true},h("h3",null,c[0]),L(c[1]))}))));
 }
 
+function MealIcon(p){
+  var k=p.k,c;
+  if(k==="utensils")c=[h("path",{key:1,d:"M3 2v7a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2V2M7 2v20M21 15V2a5 5 0 0 0-5 5v6a2 2 0 0 0 2 2h3zm0 0v7"})];
+  else if(k==="cup")c=[h("path",{key:1,d:"M17 8h1a4 4 0 1 1 0 8h-1M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4zM6 2v2M10 2v2M14 2v2"})];
+  else if(k==="plate")c=[h("circle",{key:1,cx:12,cy:12,r:9}),h("circle",{key:2,cx:12,cy:12,r:4})];
+  else if(k==="moon")c=[h("path",{key:1,d:"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"})];
+  else c=[h("circle",{key:1,cx:12,cy:12,r:4}),h("path",{key:2,d:"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"})];
+  return h("svg",{viewBox:"0 0 24 24",width:26,height:26,fill:"none",stroke:"currentColor",strokeWidth:2,strokeLinecap:"round",strokeLinejoin:"round","aria-hidden":true},c);
+}
 function Food(){
   return h("section",{id:"food"},h("div",{className:"wrap"},
-    h(Head,{title:"Food & refreshments",sub:"Stay fuelled all night."}),
-    h(Reveal,{className:"card foodcard"},h("div",{className:"tblw"},h("table",null,h("tbody",null,
-      h("tr",{className:"hd"},h("th",null,"Meal"),h("th",null,"When"),h("th",null,"Online"),h("th",null,"Spot")),
-      FOOD.map(function(f,i){return h("tr",{key:i},h("td",null,f[0]),h("td",null,f[1]),
-        h("td",{className:"y","data-l":"Online"},"Yes"),
-        h("td",{className:f[3]?"y":"n","data-l":"Spot"},f[3]?"Yes":"No"))})))))));
+    h(Head,{title:"Food & refreshments",sub:"Stay fuelled all night. Everything below is provided for every participant."}),
+    h(Reveal,{className:"allpill"},h("i",null),"For all participants · online and on-spot registrations"),
+    h(Reveal,{as:"ol",className:"meals",delay:80},MEALS.map(function(m,i){
+      return h("li",{key:i,className:"meal",style:{"--i":i}},
+        h("span",{className:"ic"},h(MealIcon,{k:m[2]})),
+        h("h3",null,m[0]),h("time",null,m[1]));
+    }))));
+}
+
+function Ticker(){
+  function set(hide){return h("div",{className:"tk-set","aria-hidden":hide?"true":undefined},TICKER.map(function(t,i){return h("span",{key:i},t)}))}
+  return h("div",{className:"ticker",role:"presentation"},h("div",{className:"tk-row"},set(false),set(true)));
 }
 
 function Rewards(){
   return h("section",{className:"rewards"},h("div",{className:"wrap"},
     h(Reveal,{className:"ribbon",dir:"zoom"},h("h2",null,"Exciting rewards for winners + pre-placement opportunities")),
     h(Reveal,{as:"p",delay:120},"Top teams take home prizes and a fast track to opportunities with our innovation and career partner, Praskla Technology."),
-    h(Reveal,{delay:220},h("a",{className:"btn primary",href:FORM,target:"_blank",rel:"noopener"},"Claim your spot"))));
+    h(Reveal,{delay:220},h("a",{className:"btn primary pulse",href:REG},"Claim your spot"))));
+}
+
+function Register(){
+  var facts=["₹450 per head, 1 to 4 members per team","Online registration closes on 22 October at 12 PM","On-spot registration is also available at Emerald Hall","Problem statements are released on the spot; open innovation is also allowed"];
+  return h("section",{id:"register"},h("div",{className:"wrap"},
+    h(Head,{title:"Join QUANTIX 2K26",sub:"Build innovative solutions in our 24-hour hackathon. Applications are handled on Devfolio."}),
+    h("div",{className:"devwrap"},
+      h(Reveal,{className:"card spot devinfo",spot:true,dir:"left"},h("h3",null,"Before you apply"),
+        h("ul",{className:"ck"},facts.map(function(t,i){return h("li",{key:i},t)}))),
+      h(Reveal,{className:"devcard",dir:"right",delay:120},
+        h("a",{className:"dlogo-link",href:"https://devfolio.co",target:"_blank",rel:"noopener noreferrer"},
+          h("img",{className:"dlogo",src:IMG.DEV,alt:"DEVFOLIO LOGO",onError:hideBroken})),
+        h("div",{className:"apply-button","data-hackathon-slug":DEVSLUG,"data-button-theme":"light",style:{height:"44px",width:"312px",maxWidth:"100%"}}),
+        h("a",{className:"alt-link",href:DEVFOLIO,target:"_blank",rel:"noopener noreferrer"},"Open QUANTIX 2K26 on Devfolio ↗"),
+        h("small",null,"If the button does not load, use the link above.")))));
 }
 
 function Poster(){
@@ -248,7 +287,7 @@ function Poster(){
         h("li",null,h("b",null,"Venue: "),"Emerald Hall, K.S.R. College of Engineering, Tiruchengode"),
         h("li",null,h("b",null,"When: "),"23 October 2026, 10:00 AM to 24 October 2026, 10:00 AM"),
         h("li",null,h("b",null,"Organised by: "),"QUANTIX Association")),
-      h("a",{className:"btn primary",href:FORM,target:"_blank",rel:"noopener"},"Register on Google Forms"))));
+      h("a",{className:"btn primary",href:REG},"Register on Devfolio"))));
 }
 
 function Contact(){
@@ -311,10 +350,10 @@ function Footer(){
         h("div",{className:"fb-text"},
           h("span",{className:"badge "+st.k},h("i"),st.t),
           h("h3",null,"Ready to build something that matters?"),
-          h("p",null,"₹500 per head · 1–4 members per team · Online registration closes 22 October, 12 PM."),
+          h("p",null,"₹450 per head · 1–4 members per team · Online registration closes 22 October, 12 PM."),
           h("small",{className:"kick"},kick)),
         h("div",{className:"fb-act"},
-          h("a",{className:"btn primary mg",href:FORM,target:"_blank",rel:"noopener",onPointerMove:mag,onPointerLeave:unmag},"Register your team"),
+          h("a",{className:"btn primary mg",href:REG,onPointerMove:mag,onPointerLeave:unmag},"Register your team"),
           h(ShareBtn))),
       h("div",{className:"foot"},
         h(Reveal,{className:"fbrand"},h("img",{src:IMG.QUA,alt:""}),h("strong",null,"QUANTIX 2K26"),
@@ -322,7 +361,6 @@ function Footer(){
           h("p",{className:"tagl"},"Real ideas. Real code. Real impact.")),
         h(Reveal,{className:"fnav",delay:100},h("h4",null,"Quick links"),
           h("ul",{role:"list"},NAV.map(function(n){return h("li",{key:n[0]},h("a",{href:"#"+n[0]},n[1]))}),
-            h("li",{key:"reg"},h("a",{href:FORM,target:"_blank",rel:"noopener"},"Register")),
             h("li",{key:"top"},h("a",{href:"#top"},"Back to top")))),
         h(Reveal,{className:"fcon",delay:200},h("h4",null,"Get in touch"),
           row("Technical support","8608067217",true,"8608067217","tel:+918608067217"),
@@ -365,6 +403,24 @@ function App(){
     return function(){io.disconnect()};
   },[]);
   useEffect(function(){
+    var sc=document.createElement("script");
+    sc.src="https://apply.devfolio.co/v2/sdk.js";sc.async=true;sc.defer=true;
+    document.body.appendChild(sc);
+    return function(){if(sc.parentNode)sc.parentNode.removeChild(sc)};
+  },[]);
+  useEffect(function(){
+    if(reduce)return;
+    function rip(e){
+      var b=e.target.closest&&e.target.closest(".btn");if(!b)return;
+      var r=b.getBoundingClientRect(),d=Math.max(r.width,r.height),sp=document.createElement("span");
+      sp.className="rip";sp.setAttribute("aria-hidden","true");
+      sp.style.cssText="width:"+d+"px;height:"+d+"px;left:"+(e.clientX-r.left-d/2)+"px;top:"+(e.clientY-r.top-d/2)+"px";
+      b.appendChild(sp);setTimeout(function(){if(sp.parentNode)sp.parentNode.removeChild(sp)},700);
+    }
+    document.addEventListener("pointerdown",rip,{passive:true});
+    return function(){document.removeEventListener("pointerdown",rip)};
+  },[]);
+  useEffect(function(){
     function k(e){if(e.key==="Escape")setOpen(false)}
     addEventListener("keydown",k);return function(){removeEventListener("keydown",k)};
   },[]);
@@ -372,7 +428,7 @@ function App(){
   return h(React.Fragment,null,
     h("div",{className:"progress",ref:bar,"aria-hidden":"true"}),
     h(Header,{theme:theme,toggleTheme:toggleTheme,open:open,setOpen:setOpen,active:active,scrolled:scrolled}),
-    h("main",{id:"top"},h(Hero),h(Facts),h(Partners),h(About),h(Tracks),h(Schedule),h(Rules),h(Food),h(Rewards),h(Poster),h(Contact)),
+    h("main",{id:"top"},h(Hero),h(Facts),h(Partners),h(Ticker),h(About),h(Tracks),h(Schedule),h(Rules),h(Food),h(Rewards),h(Register),h(Poster),h(Contact)),
     h(Footer),
     h("button",{className:"totop"+(showTop?" show":""),"aria-label":"Back to top",onClick:function(){window.scrollTo({top:0,behavior:reduce?"auto":"smooth"})}},
       h(Icon,null,h("path",{d:"M12 19V5M5 12l7-7 7 7"}))));
