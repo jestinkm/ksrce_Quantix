@@ -10,8 +10,8 @@ var IMG={
 "use strict";
 var useState=React.useState,useEffect=React.useEffect,useRef=React.useRef;
 var h=React.createElement;
-var FORM="https://docs.google.com/forms/d/e/1FAIpQLSdTKTcflw1Xd1MwzrQ62AeMMN_r6_e7ccnRiqJcwPfIb4ygmQ/viewform?usp=sharing&ouid=107403460728283306105";
-var DEVFOLIO="https://quantix-2k26.devfolio.co/";
+var FORM="";
+var DEVFOLIO="";
 var DEVSLUG="quantix-2k26";
 var REG="#register";
 var reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -19,11 +19,12 @@ var canHover=window.matchMedia&&matchMedia("(hover: hover)").matches;
 function pad(x){return String(x).padStart(2,"0")}
 
 /* ---------- data ---------- */
-var NAV=[["about","About"],["tracks","Domains"],["schedule","Schedule"],["rules","Guidelines"],["food","Food"],["register","Register"],["contact","Contact"]];
+var NAV=[["about","About"],["tracks","Domains"],["schedule","Schedule"],["rules","Guidelines"],["food","Food"],["register","Registration"],["contact","Contact"]];
 var TRACKS=["Artificial Intelligence & Machine Learning","Sustainability, CleanTech & Green Energy","HealthTech & Biomedical Innovation","Cybersecurity & Blockchain Technology","Smart Agriculture & Rural Development (AgniTech)","Data Science & Analytics"];
 var SCHEDULE=[
- ["23 Oct · 10:00 AM","Hackathon begins","Report for attendance and seating. Problem statements are released on the spot."],
- ["23 Oct · Afternoon","Lunch","Provided for all participants, online and on-spot."],
+ ["23 Oct · 9:00 AM","Reporting & Spot Registration","Report to Chandrayaan Hall, Abdul Kalam Block for attendance and seating."],
+ ["23 Oct · 10:00 AM","Hackathon begins","Official kickoff. Problem statements are released on the spot."],
+ ["23 Oct · Afternoon","Lunch","Provided for all registered participants."],
  ["23 Oct · Evening","Evening refreshments","Provided for all participants."],
  ["23 Oct · Night","Dinner","Provided for all participants."],
  ["Midnight","Midnight refreshments","Fuel up for the final stretch."],
@@ -31,7 +32,7 @@ var SCHEDULE=[
  ["24 Oct · 10:00 AM","Hackathon ends","PPT evaluation, working product demo, then the winners announcement."]
 ];
 var MEALS=[["Lunch","23 Oct · Afternoon","utensils"],["Evening refreshments","23 Oct · Evening","cup"],["Dinner","23 Oct · Night","plate"],["Midnight refreshments","Late night","moon"],["Morning refreshments","24 Oct · Morning","sun"]];
-var TICKER=["Real ideas","Real code","Real impact","24 hours","6 domains","On-spot problem statements","Pre-placement opportunities","₹450 per head","Emerald Hall"];
+var TICKER=["Real ideas","Real code","Real impact","24 hours","6 domains","On-spot problem statements","Pre-placement opportunities","₹450 per head","Chandrayaan Hall","Spot Registration Available","Online Registration Closed"];
 
 /* ---------- hooks ---------- */
 function useInView(threshold){
@@ -132,18 +133,61 @@ function Header(p){
           p.theme==="dark"
             ?h(Icon,null,h("circle",{cx:12,cy:12,r:4}),h("path",{d:"M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"}))
             :h(Icon,null,h("path",{d:"M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"}))),
-        h("a",{className:"btn primary reg",href:REG},"Register now"),
+        h("button",{className:"btn reg-closed-btn reg",disabled:true,"aria-disabled":"true",title:"Online registration is closed. Spot registration only."},
+          h("span",{className:"status-dot closed","aria-hidden":true}),
+          "Online Registration Closed"),
         h("button",{className:"burger"+(p.open?" x":""),"aria-label":"Toggle menu","aria-expanded":p.open,onClick:function(){p.setOpen(!p.open)}},h("i"),h("i"),h("i")))));
 }
 
 function Countdown(){
   var c=useCountdown();
   var cells=[["d","Days"],["h","Hours"],["m","Min"],["s","Sec"]];
-  var note=c.state==="before"?"until kickoff at 10:00 AM":(c.state==="live"?"Hackathon is live now!":"Hackathon has ended. Thank you!");
+  var note=c.state==="before"?"Reporting at 9:00 AM · Kickoff at 10:00 AM":(c.state==="live"?"Hackathon is live now!":"Hackathon has ended. Thank you!");
   return h("div",{className:"count"},
     h("strong",null,"23–24 October 2026"),
     h("div",{className:"cd"},cells.map(function(x){return h("div",{key:x[0]},h("b",{key:c[x[0]],className:"tk"},pad(c[x[0]])),h("span",null,x[1]))})),
     h("small",null,note));
+}
+
+function HeroAnnouncement(){
+  return h("div",{className:"hero-announcement"},
+    h("div",{className:"ha-top-row"},
+      h("div",{className:"ha-badges"},
+        h("span",{className:"badge-closed"},
+          h("span",{className:"ha-dot red-dot"}),
+          "ONLINE REGISTRATION CLOSED"
+        ),
+        h("span",{className:"badge-spot-open glowing-pulse"},
+          h("span",{className:"ha-dot green-dot"}),
+          "SPOT REGISTRATION OPEN"
+        )
+      ),
+      h("div",{className:"ha-quick-meta"},
+        h("span",{className:"ha-meta-pill"},"📍 Chandrayaan Hall, KSRCE"),
+        h("span",{className:"ha-meta-pill"},"🕘 Reporting Time: 9:00 AM")
+      )
+    ),
+    h("div",{className:"ha-content"},
+      h("h2",{className:"ha-title"},"ONLINE REGISTRATION IS NOW CLOSED!"),
+      h("p",{className:"ha-subtitle"},
+        "Missed Online Registration? ",
+        h("strong",null,"You Still Have a Chance!"),
+        " Spot Registration Available at the Venue."
+      ),
+      h("div",{className:"ha-card"},
+        h("div",{className:"ha-card-header"},
+          h("strong",null,"QUANTIX 2K26 – 24-Hour Hackathon"),
+          h("span",{className:"ha-mode-badge"},"Spot Registration Only")
+        ),
+        h("ul",{className:"ha-details-grid"},
+          h("li",null,h("span",{className:"ha-label"},"📅 Date:"),h("strong",null," 23–24 October 2026")),
+          h("li",null,h("span",{className:"ha-label"},"🕘 Reporting Time:"),h("strong",null," 9:00 AM")),
+          h("li",null,h("span",{className:"ha-label"},"📍 Venue:"),h("strong",null," Chandrayaan Hall, KSRCE")),
+          h("li",null,h("span",{className:"ha-label"},"🎫 Registration Mode:"),h("strong",null," Spot Registration Only"))
+        )
+      )
+    )
+  );
 }
 
 function Hero(){
@@ -151,13 +195,18 @@ function Hero(){
   return h("div",{className:"hero",onPointerMove:glow},
     h(Network),
     h("div",{className:"wrap"},
+      h(HeroAnnouncement),
       h("div",{className:"hero-copy"},
         h("p",{className:"presents hi"},"KSRCE AI Innovation Hub & QUANTIX Association present"),
         h("h1",{className:"mark","aria-label":"Quantix 2K26"},h(Letters,{text:"QUANTIX",cls:"q",start:0}),h("span",{className:"sp"}," "),h(Letters,{text:"2K26",cls:"k",start:7})),
         h("div",{className:"slant"},h("span",null,"24 hours ",h("i",null,"//")," hackathon")),
         h("div",{className:"circuit hi hi2"},"Real ideas. Real code. Real impact."),
         h("div",{className:"cta hi hi3"},
-          h("a",{className:"btn primary pulse",href:REG},"Register your team"),
+          h("button",{className:"btn disabled-reg-btn",disabled:true,"aria-disabled":"true"},
+            h("span",{className:"status-dot closed"}),
+            "Online Registration Closed"
+          ),
+          h("a",{className:"btn primary pulse",href:REG},"Spot Registration Info"),
           h("a",{className:"btn ghost",href:"#schedule"},"View schedule"))),
       h("aside",{className:"side hi hi2"},
         h("div",{className:"plate-wrap"},h("div",{className:"ring"}),h("div",{className:"plate"},h("img",{src:IMG.QUA,alt:"QUANTIX AI & DS Association emblem"}))),
@@ -165,10 +214,10 @@ function Hero(){
 }
 
 function Facts(){
-  var items=[["23–24 Oct 2026","10:00 AM to 10:00 AM"],["₹450 per head","Registration fee"],["1–4 members","Per team"],["22 Oct, 12 PM","Online registration closes"]];
+  var items=[["23–24 Oct 2026","Reporting: 9:00 AM"],["₹450 per head","Spot registration fee"],["1–4 members","Per team"],["Online Closed","Spot Reg Available"]];
   return h("div",{className:"facts"},h("div",{className:"wrap"},
     h("div",{className:"band"},items.map(function(x,i){return h(Reveal,{key:i,delay:i*90},h("b",null,x[0]),h("span",null,x[1]))})),
-    h("p",{className:"note"},"On-spot registration is also available at Emerald Hall.")));
+    h("p",{className:"note"},"Online registration is closed. Spot registration is available at Chandrayaan Hall (Reporting Time: 9:00 AM).")));
 }
 
 function hideBroken(e){e.currentTarget.style.visibility="hidden"}
@@ -211,7 +260,7 @@ function Schedule(){
     return function(){removeEventListener("scroll",on);removeEventListener("resize",on)};
   },[]);
   return h("section",{id:"schedule"},h("div",{className:"wrap"},
-    h(Head,{title:"Event schedule",sub:"Emerald Hall, Abdul Kalam Block, K.S.R. College of Engineering."}),
+    h(Head,{title:"Event schedule",sub:"Chandrayaan Hall, Abdul Kalam Block, K.S.R. College of Engineering."}),
     h("div",{className:"tl",ref:ref},SCHEDULE.map(function(s,i){
       return h(Reveal,{key:i,className:"it",dir:"left",delay:60},h("time",null,s[0]),h("h3",null,s[1]),h("p",null,s[2]));
     }))));
@@ -220,11 +269,11 @@ function Schedule(){
 function Rules(){
   function L(items){return h("ul",{className:"ck"},items.map(function(t,i){var m=t.indexOf("Mandatory: ")===0;return m?h("li",{key:i,className:"must-li"},h("span",{className:"must"},"Mandatory"),t.slice(11)):h("li",{key:i},t)}))}
   var cards=[
-    ["Bring with you",["Mandatory: Bringing a laptop is compulsory for every team","College ID card and registration details","One junction box per team","Report to Emerald Hall, Abdul Kalam Block for attendance and seating","Follow the organising committee and volunteers throughout"]],
+    ["Bring with you",["Mandatory: Bringing a laptop is compulsory for every team","College ID card and registration details","One junction box per team","Report to Chandrayaan Hall, Abdul Kalam Block for attendance and seating (Reporting: 9:00 AM)","Follow the organising committee and volunteers throughout"]],
     ["Evaluation",["PPT evaluation: present your idea and approach","Product evaluation: demo your working product","Submit PPT, GitHub link and demo link via the Technical Committee before evaluation","Winners announced on the morning of 24 October"]],
-    ["Registration",["₹450 per head, 1 to 4 members per team","Online registration closes on 22 October at 12 PM","On-spot registration is available","Problem statements are released on the spot; open innovation is also allowed"]]];
+    ["Registration",["₹450 per head, 1 to 4 members per team","Online registration is officially closed","Spot registration is available at Chandrayaan Hall (Reporting: 9:00 AM)","Problem statements are released on the spot; open innovation is also allowed"]]];
   return h("section",{id:"rules",className:"alt"},h("div",{className:"wrap"},
-    h(Head,{title:"Guidelines",sub:"Please read these before submitting your registration."}),
+    h(Head,{title:"Guidelines",sub:"Please read these before reporting for spot registration."}),
     h("div",{className:"two"},cards.map(function(c,i){return h(Reveal,{key:i,className:"card spot",delay:i*110,spot:true},h("h3",null,c[0]),L(c[1]))}))));
 }
 
@@ -240,7 +289,7 @@ function MealIcon(p){
 function Food(){
   return h("section",{id:"food"},h("div",{className:"wrap"},
     h(Head,{title:"Food & refreshments",sub:"Stay fuelled all night. Everything below is provided for every participant."}),
-    h(Reveal,{className:"allpill"},h("i",null),"For all participants · online and on-spot registrations"),
+    h(Reveal,{className:"allpill"},h("i",null),"For all registered participants · Spot registration available"),
     h(Reveal,{as:"ol",className:"meals",delay:80},MEALS.map(function(m,i){
       return h("li",{key:i,className:"meal",style:{"--i":i}},
         h("span",{className:"ic"},h(MealIcon,{k:m[2]})),
@@ -257,22 +306,87 @@ function Rewards(){
   return h("section",{className:"rewards"},h("div",{className:"wrap"},
     h(Reveal,{className:"ribbon",dir:"zoom"},h("h2",null,"Exciting rewards for winners + pre-placement opportunities")),
     h(Reveal,{as:"p",delay:120},"Top teams take home prizes and a fast track to opportunities with our innovation and career partner, Praskla Technology."),
-    h(Reveal,{delay:220},h("a",{className:"btn primary pulse",href:REG},"Claim your spot"))));
+    h(Reveal,{delay:220},h("a",{className:"btn primary pulse",href:REG},"Spot Registration at Venue"))));
 }
 
 function Register(){
-  var facts=["₹450 per head, 1 to 4 members per team","Online registration closes on 22 October at 12 PM","On-spot registration is also available at Emerald Hall","Problem statements are released on the spot; open innovation is also allowed"];
-  return h("section",{id:"register"},h("div",{className:"wrap"},
-    h(Head,{title:"Join QUANTIX 2K26",sub:"Build innovative solutions in our 24-hour hackathon. Applications are handled on Devfolio."}),
-    h("div",{className:"devwrap"},
-      h(Reveal,{className:"card spot devinfo",spot:true,dir:"left"},h("h3",null,"Before you apply"),
-        h("ul",{className:"ck"},facts.map(function(t,i){return h("li",{key:i},t)}))),
-      h(Reveal,{className:"devcard",dir:"right",delay:120},
-        h("a",{className:"dlogo-link",href:"https://devfolio.co",target:"_blank",rel:"noopener noreferrer"},
-          h("img",{className:"dlogo",src:IMG.DEV,alt:"DEVFOLIO LOGO",onError:hideBroken})),
-        h("div",{className:"apply-button","data-hackathon-slug":DEVSLUG,"data-button-theme":"light",style:{height:"44px",width:"312px",maxWidth:"100%"}}),
-        h("a",{className:"alt-link",href:DEVFOLIO,target:"_blank",rel:"noopener noreferrer"},"Open QUANTIX 2K26 on Devfolio ↗"),
-        h("small",null,"If the button does not load, use the link above.")))));
+  var guidelines=[
+    "₹450 per head, 1 to 4 members per team",
+    "Bring your college ID card and registration fee for spot verification",
+    "Report directly to Chandrayaan Hall, Abdul Kalam Block by 9:00 AM",
+    "Problem statements released on the spot; open innovation also permitted",
+    "Pre-placement opportunities & exciting cash rewards for winners"
+  ];
+  return h("section",{id:"register"},
+    h("div",{className:"wrap"},
+      h(Head,{title:"Registration Status",sub:"Online registration is officially closed. Spot registration is open at the venue."}),
+      h("div",{className:"spot-reg-container"},
+        h(Reveal,{className:"spot-reg-card main-spot-card",dir:"left"},
+          h("div",{className:"spot-card-badge-row"},
+            h("span",{className:"badge-closed-sm"},"🔴 Online Registration Closed"),
+            h("span",{className:"badge-spot-open glowing-pulse"},h("span",{className:"ha-dot green-dot"}),"SPOT REGISTRATION OPEN")
+          ),
+          h("h3",{className:"spot-card-title"},"SPOT REGISTRATION AVAILABLE"),
+          h("p",{className:"spot-card-desc"},
+            "Online registration has officially closed. Interested participants can register directly at the venue."
+          ),
+          h("div",{className:"spot-info-box"},
+            h("div",{className:"spot-info-item"},
+              h("span",{className:"spot-info-icon"},"🕘"),
+              h("div",null,
+                h("span",{className:"spot-info-label"},"Reporting Time"),
+                h("strong",{className:"spot-info-value"},"9:00 AM")
+              )
+            ),
+            h("div",{className:"spot-info-item"},
+              h("span",{className:"spot-info-icon"},"📍"),
+              h("div",null,
+                h("span",{className:"spot-info-label"},"Venue"),
+                h("strong",{className:"spot-info-value"},"Chandrayaan Hall, KSRCE")
+              )
+            ),
+            h("div",{className:"spot-info-item"},
+              h("span",{className:"spot-info-icon"},"📅"),
+              h("div",null,
+                h("span",{className:"spot-info-label"},"Date"),
+                h("strong",{className:"spot-info-value"},"23 October 2026")
+              )
+            ),
+            h("div",{className:"spot-info-item"},
+              h("span",{className:"spot-info-icon"},"💰"),
+              h("div",null,
+                h("span",{className:"spot-info-label"},"Entry Fee"),
+                h("strong",{className:"spot-info-value"},"₹450 per head (1–4 per team)")
+              )
+            )
+          ),
+          h("div",{className:"spot-note-box"},
+            h("span",{className:"spot-note-tag"},"Note:"),
+            " Spot registration is subject to slot availability. Interested participants can register directly at the venue."
+          ),
+          h("div",{className:"spot-card-action"},
+            h("button",{className:"btn disabled-reg-btn",disabled:true,"aria-disabled":"true"},
+              h("span",{className:"status-dot closed"}),
+              "Online Registration Closed"
+            ),
+            h("a",{className:"btn primary",href:"#schedule"},"View Event Schedule")
+          )
+        ),
+        h(Reveal,{className:"card spot spot-guide-card",dir:"right",delay:120,spot:true},
+          h("h3",null,"Spot Registration Checklist"),
+          h("p",{className:"checklist-sub"},"Keep these ready when reporting to Chandrayaan Hall:"),
+          h("ul",{className:"ck"},guidelines.map(function(t,i){return h("li",{key:i},t)})),
+          h("div",{className:"partner-strip"},
+            h("span",{className:"partner-strip-label"},"Registration & Career Partner:"),
+            h("div",{className:"partner-strip-logos"},
+              h("img",{src:IMG.DEV,alt:"DEVFOLIO LOGO",className:"dlogo-sm",onError:hideBroken}),
+              h("img",{src:IMG.PRA,alt:"Praskla Technology",className:"dlogo-sm",onError:hideBroken})
+            )
+          )
+        )
+      )
+    )
+  );
 }
 
 function Poster(){
@@ -282,12 +396,20 @@ function Poster(){
   function leave(){if(ref.current)ref.current.style.transform=""}
   return h("section",null,h("div",{className:"wrap posterwrap"},
     h(Reveal,{dir:"left",className:"pw",style:{}},h("div",{className:"tilt",onPointerMove:move,onPointerLeave:leave},h("img",{ref:ref,src:IMG.FLYER,alt:"QUANTIX 2K26 24-hour hackathon flyer",loading:"lazy"}))),
-    h(Reveal,{delay:120,dir:"right"},h("h2",null,"Join us at Emerald Hall"),
+    h(Reveal,{delay:120,dir:"right"},h("h2",null,"Join us at Chandrayaan Hall"),
       h("ul",{className:"meta"},
-        h("li",null,h("b",null,"Venue: "),"Emerald Hall, K.S.R. College of Engineering, Tiruchengode"),
+        h("li",null,h("b",null,"Venue: "),"Chandrayaan Hall, K.S.R. College of Engineering, Tiruchengode"),
+        h("li",null,h("b",null,"Reporting Time: "),"23 October 2026, 9:00 AM"),
         h("li",null,h("b",null,"When: "),"23 October 2026, 10:00 AM to 24 October 2026, 10:00 AM"),
+        h("li",null,h("b",null,"Registration: "),"Spot Registration Only (Online Closed)"),
         h("li",null,h("b",null,"Organised by: "),"QUANTIX Association")),
-      h("a",{className:"btn primary",href:REG},"Register on Devfolio"))));
+      h("div",{className:"poster-cta-row"},
+        h("button",{className:"btn disabled-reg-btn",disabled:true,"aria-disabled":"true"},
+          h("span",{className:"status-dot closed"}),
+          "Online Registration Closed"
+        ),
+        h("a",{className:"btn primary",href:REG},"Spot Registration Details")
+      ))));
 }
 
 function Contact(){
@@ -327,8 +449,7 @@ function ShareBtn(){
 }
 function calcStatus(){
   var n=Date.now();
-  if(n<Date.parse("2026-10-22T12:00:00+05:30"))return {k:"open",t:"Online registration open"};
-  if(n<Date.parse("2026-10-24T10:00:00+05:30"))return {k:"spot",t:"Online closed · On-spot registration available"};
+  if(n<Date.parse("2026-10-24T10:00:00+05:30"))return {k:"spot",t:"Online closed · Spot registration available"};
   return {k:"done",t:"Event completed"};
 }
 function useStatus(){
@@ -338,7 +459,7 @@ function useStatus(){
 }
 function Footer(){
   var c=useCountdown(),st=useStatus();
-  var kick=c.state==="before"?"Kickoff in "+c.d+"d "+pad(c.h)+"h "+pad(c.m)+"m "+pad(c.s)+"s":(c.state==="live"?"The hackathon is live now!":"Thank you for being part of QUANTIX 2K26.");
+  var kick=c.state==="before"?"Reporting at 9:00 AM · Kickoff at 10:00 AM (in "+c.d+"d "+pad(c.h)+"h "+pad(c.m)+"m "+pad(c.s)+"s)":(c.state==="live"?"The hackathon is live now!":"Thank you for being part of QUANTIX 2K26.");
   function row(label,val,tel,copy,href){
     return h("div",{className:"crow"},h("span",{className:"lbl"},label),
       h("div",{className:"cval"},h("a",{href:href},val),h(CopyBtn,{text:copy,label:"Copy "+label})));
@@ -350,14 +471,14 @@ function Footer(){
         h("div",{className:"fb-text"},
           h("span",{className:"badge "+st.k},h("i"),st.t),
           h("h3",null,"Ready to build something that matters?"),
-          h("p",null,"₹450 per head · 1–4 members per team · Online registration closes 22 October, 12 PM."),
+          h("p",null,"₹450 per head · 1–4 members per team · Spot registration available at Chandrayaan Hall (Reporting: 9:00 AM)."),
           h("small",{className:"kick"},kick)),
         h("div",{className:"fb-act"},
-          h("a",{className:"btn primary mg",href:REG,onPointerMove:mag,onPointerLeave:unmag},"Register your team"),
+          h("a",{className:"btn primary mg",href:REG,onPointerMove:mag,onPointerLeave:unmag},"Spot Registration Info"),
           h(ShareBtn))),
       h("div",{className:"foot"},
         h(Reveal,{className:"fbrand"},h("img",{src:IMG.QUA,alt:""}),h("strong",null,"QUANTIX 2K26"),
-          h("p",null,"24-hour hackathon, 23–24 October 2026, Emerald Hall, K.S.R. College of Engineering, Tiruchengode."),
+          h("p",null,"24-hour hackathon, 23–24 October 2026, Chandrayaan Hall, K.S.R. College of Engineering, Tiruchengode."),
           h("p",{className:"tagl"},"Real ideas. Real code. Real impact.")),
         h(Reveal,{className:"fnav",delay:100},h("h4",null,"Quick links"),
           h("ul",{role:"list"},NAV.map(function(n){return h("li",{key:n[0]},h("a",{href:"#"+n[0]},n[1]))}),
@@ -401,12 +522,6 @@ function App(){
     var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)setActive(e.target.id)})},{rootMargin:"-40% 0px -55% 0px"});
     NAV.forEach(function(n){var el=document.getElementById(n[0]);if(el)io.observe(el)});
     return function(){io.disconnect()};
-  },[]);
-  useEffect(function(){
-    var sc=document.createElement("script");
-    sc.src="https://apply.devfolio.co/v2/sdk.js";sc.async=true;sc.defer=true;
-    document.body.appendChild(sc);
-    return function(){if(sc.parentNode)sc.parentNode.removeChild(sc)};
   },[]);
   useEffect(function(){
     if(reduce)return;

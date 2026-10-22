@@ -1,9 +1,11 @@
 QUANTIX 2K26 website (static site, React 18 loaded from a CDN, no build step)
+Venue: Chandrayaan Hall, K.S.R. College of Engineering
+Registration: Online Registration Closed (Spot Registration Only at Venue)
 
 Files
   index.html                      page shell and theme script
   css/style.css                   styles, animations, media queries
-  js/app.js                       React app; the registration link is the FORM constant
+  js/app.js                       React app
   assets/                         logos and flyer
   quantix-2k26-single-file.html   the same site in one self-contained file
 
